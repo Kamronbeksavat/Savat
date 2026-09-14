@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FiUser, FiLogOut, FiSearch, FiX, FiHeart, FiSettings } from 'react-icons/fi';
 
 const Navbar = ({ cartCount = 0, wishlistCount = 0, user, onOpenAuth, onLogout, products = [] }) => {
   const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
 
   // Admin foydalanuvchisini aniqlash
   const isAdmin = user?.role === 'admin' || user?.email === 'admin@gmail.com';
@@ -16,8 +17,22 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, user, onOpenAuth, onLogout, 
         product.category.toLowerCase().includes(searchQuery.toLowerCase())
       );
 
+  // Form yuborilganda (Enter bosilganda) ishlaydigan funksiya
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
+
+    // Agar mos keladigan mahsulotlar bo'lsa, birinchisiga o'tish yoki qidiruv sahifasiga yo'naltirish
+    // Masalan, agar birinchi topilgan mahsulotga o'tishini xohlasangiz:
+    const matchedProduct = products.find(p => p.title.toLowerCase().includes(searchQuery.toLowerCase()));
+    if (matchedProduct) {
+      navigate(`/product/${matchedProduct.id}`);
+      setSearchQuery('');
+    }
+  };
+
   return (
-    <header className="bg-[#0d1322] border-b border-slate-800 sticky top-0 z-50 fixed">
+    <header className="bg-[#0d1322] border-b border-slate-800 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex flex-col md:flex-row items-center justify-between gap-3 md:gap-6">
         
         {/* Yuqori qator: Logo va harakatlar tugmasi (Mobil vaqtida yonma-yon) */}
@@ -27,7 +42,7 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, user, onOpenAuth, onLogout, 
             <span className="text-[#06B6D4]">.uz</span>
           </Link>
 
-          {/* Mobil qurilmalar uchun harakatlar bloki (Wishlist, Cart, Dashboard/Admin, Profile, Auth) */}
+          {/* Mobil qurilmalar uchun harakatlar bloki */}
           <div className="flex md:hidden items-center gap-1.5 sm:gap-2">
             <Link 
               to="/wishlist" 
@@ -57,7 +72,6 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, user, onOpenAuth, onLogout, 
 
             {user ? (
               <div className="flex items-center gap-1">
-                {/* MOBIL: Agar admin bo'lsa Dashboard ikonchasi */}
                 {isAdmin && (
                   <Link
                     to="/savata"
@@ -67,8 +81,6 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, user, onOpenAuth, onLogout, 
                     <FiSettings size={18} />
                   </Link>
                 )}
-
-                {/* MOBIL: Profil sahifasiga o'tish ikonchasi */}
                 <Link
                   to={`/profile/${user.id || 'me'}`}
                   className="p-2 bg-slate-900 border border-slate-700 text-[#06B6D4] rounded-xl transition-all"
@@ -76,8 +88,6 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, user, onOpenAuth, onLogout, 
                 >
                   <FiUser size={18} />
                 </Link>
-
-                {/* MOBIL: Chiqish tugmasi */}
                 <button
                   onClick={onLogout}
                   title="Chiqish"
@@ -97,12 +107,12 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, user, onOpenAuth, onLogout, 
           </div>
         </div>
 
-        {/* Dynamic Search Bar */}
-        <div className="w-full md:flex-1 md:max-w-2xl relative">
+        {/* Dynamic Search Bar (Form bilan o'raldi) */}
+        <form onSubmit={handleSearchSubmit} className="w-full md:flex-1 md:max-w-2xl relative">
           <div className="relative">
             <input
               type="text"
-              placeholder="Mahsulotlarni qidirish..."
+              placeholder="Mahsulotlarni qidirish (Enter ni bosing)..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-slate-900/90 border border-slate-700 text-xs sm:text-sm rounded-xl px-4 py-2 sm:py-2.5 pl-9 sm:pl-10 pr-9 text-white placeholder-gray-400 focus:outline-none focus:border-[#06B6D4] transition-all"
@@ -110,6 +120,7 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, user, onOpenAuth, onLogout, 
             <FiSearch className="absolute left-3 top-2.5 sm:top-3 text-gray-400" size={16} />
             {searchQuery && (
               <button
+                type="button"
                 onClick={() => setSearchQuery('')}
                 className="absolute right-3 top-2.5 sm:top-3 text-gray-400 hover:text-white"
               >
@@ -125,7 +136,10 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, user, onOpenAuth, onLogout, 
                 searchResults.map((item) => (
                   <div
                     key={item.id}
-                    onClick={() => setSearchQuery('')}
+                    onClick={() => {
+                      setSearchQuery('');
+                      navigate(`/product/${item.id}`);
+                    }}
                     className="flex items-center gap-3 sm:gap-4 p-2.5 sm:p-3 hover:bg-slate-900 rounded-xl transition-colors cursor-pointer border-b border-slate-800/40 last:border-none"
                   >
                     <div className="w-10 h-10 sm:w-12 sm:h-12 bg-slate-800 rounded-lg flex items-center justify-center text-xs text-gray-500 overflow-hidden flex-shrink-0">
@@ -145,9 +159,9 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, user, onOpenAuth, onLogout, 
               )}
             </div>
           )}
-        </div>
+        </form>
 
-        {/* User Nav (Ishchi stoli (Desktop) ko'rinishi) */}
+        {/* User Nav (Desktop ko'rinishi) */}
         <div className="hidden md:flex items-center gap-4">
           <Link 
             to="/wishlist" 
@@ -177,7 +191,6 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, user, onOpenAuth, onLogout, 
           <div className="flex items-center gap-2 border-l border-slate-800 pl-4">
             {user ? (
               <div className="flex items-center gap-2">
-                {/* DESKTOP: FAQAT ADMIN UCHUN: Dashboard Tugmasi */}
                 {isAdmin && (
                   <Link
                     to="/savata"
@@ -187,8 +200,6 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, user, onOpenAuth, onLogout, 
                     <span>Dashboard</span>
                   </Link>
                 )}
-
-                {/* DESKTOP: Foydalanuvchi profili linki */}
                 <Link
                   to={`/profile/${user.id || 'me'}`}
                   className="flex items-center gap-2 bg-slate-900 border border-slate-700 hover:border-[#06B6D4] px-3 py-1.5 rounded-xl transition-all cursor-pointer"
@@ -196,8 +207,6 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, user, onOpenAuth, onLogout, 
                   <FiUser className="text-[#06B6D4]" />
                   <span className="text-sm font-medium text-white">{user.name}</span>
                 </Link>
-
-                {/* DESKTOP: Tizimdan chiqish tugmasi */}
                 <button
                   onClick={onLogout}
                   title="Chiqish"
