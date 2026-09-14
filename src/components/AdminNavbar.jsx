@@ -76,7 +76,7 @@ const AdminNavbar = ({ adminUser, onLogout }) => {
             
             {/* Yangi buyurtmalar qo'ng'iroqchasi */}
             <Link
-              to="/admin/orders"
+              to="#"
               className="relative p-2.5 text-gray-400 hover:text-white bg-slate-900 border border-slate-800 rounded-xl transition-all"
               title="Yangi buyurtmalar"
             >
