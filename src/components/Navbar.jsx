@@ -17,7 +17,7 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, user, onOpenAuth, onLogout, 
       );
 
   return (
-    <header className="bg-[#0d1322] border-b border-slate-800 sticky top-0 z-50">
+    <header className="bg-[#0d1322] border-b border-slate-800 sticky top-0 z-50 fixed">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex flex-col md:flex-row items-center justify-between gap-3 md:gap-6">
         
         {/* Yuqori qator: Logo va harakatlar tugmasi (Mobil vaqtida yonma-yon) */}
