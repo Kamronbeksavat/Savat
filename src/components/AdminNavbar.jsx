@@ -56,7 +56,7 @@ const AdminNavbar = ({ adminUser, onLogout }) => {
           
           {/* Logo va Admin Status */}
           <div className="flex items-center gap-3">
-            <Link to="/admin" className="flex items-center gap-2">
+            <Link to="/savata" className="flex items-center gap-2">
               <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-neonCyan/10 border border-neonCyan/40 flex items-center justify-center text-neonCyan font-black text-lg sm:text-xl shadow-lg shadow-neonCyan/10">
                 <FiShield />
               </div>
