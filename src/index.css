@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Agar qorong'u fon to'liq qoplanmagan bo'lsa */
+body {
+  margin: 0;
+  background-color: #020617; /* Slate-950 */
+  color: #ffffff;
+  font-family: system-ui, -apple-system, sans-serif;
+}
