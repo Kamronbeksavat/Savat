@@ -17,7 +17,7 @@ function App() {
         <Route path="/product/:id" element={<ProductDetailPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/wishlist" element={<WishlistPage />} /> {/* Qo'shildi */}
-        <Route path="/savata" element={<AdminPage />} />
+        <Route path="/savatadmin" element={<AdminPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>
