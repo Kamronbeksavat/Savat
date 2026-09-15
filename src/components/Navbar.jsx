@@ -193,7 +193,7 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, user, onOpenAuth, onLogout, 
               <div className="flex items-center gap-2">
                 {isAdmin && (
                   <Link
-                    to="/savata"
+                    to="/savatadmin"
                     className="flex items-center gap-1.5 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white text-xs font-bold px-3 py-2 rounded-xl border border-purple-400/30 shadow-lg shadow-purple-500/20 transition-all cursor-pointer"
                   >
                     <FiSettings size={14} />
