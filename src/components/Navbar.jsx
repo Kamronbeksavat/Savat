@@ -74,7 +74,7 @@ const Navbar = ({ cartCount = 0, wishlistCount = 0, user, onOpenAuth, onLogout, 
               <div className="flex items-center gap-1">
                 {isAdmin && (
                   <Link
-                    to="/savata"
+                    to="/savatadmin"
                     className="p-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl shadow-md transition-all"
                     title="Admin Dashboard"
                   >
